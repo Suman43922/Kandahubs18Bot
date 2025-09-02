@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src='//libtl.com/sdk.js' data-zone='9593532' data-sdk='show_9593532'></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unlock Your Movie</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #8B8000;
+      color: black;
+      padding: 10px;
+      margin: 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-height: 95vh;
+    }
+
+    .title {
+      font-size: 25px;
+      color: red;
+      text-decoration: underline;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .box {
+      background-color: #1e1e1e;
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 400px;
+      margin: 5px 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      box-sizing: border-box;
+    }
+    #keyBox {
+  min-height: 200px;
+}
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 90%;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 16px;
+      background-color: #00c853;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .circle {
+      border: 2px solid blue;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      margin: 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #ffffff;
+    }
+
+    .cooldownBtn {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      padding: 15px 30px;
+      font-size: 20px;
+      border-radius: 25px;
+      border: none;
+      cursor: not-allowed;
+    }
+
+    .cooldownBtn.ready {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2 class="title">Download Your Videos</h2>
+  <div class="box" id="keyBox">
+    <p>Enter your key below:</p>
+<input id="keyInput" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="Enter 10-digit number" oninput="validateKey(this)">
+    <button onclick="startCooldown()">Submit</button>
+  </div>
+  <div class="box" id="cooldownBox" style="display: none;">
+  <p>Your link is almost ready.</p>
+  <div class="circle" id="cooldownCircle">
+    <div>
+      <div id="countValue" style="font-size: 28px;">5</div>
+      <div style="font-size: 20px;">Seconds</div>
+    </div>
+  </div>
+  <button id="cooldownButton" class="cooldownBtn" disabled>Please Wait...</button>
+</div>
+  <div id="adImage" style="display: none; margin-top: 10px;">
+    <img  
+      src="https://i.ibb.co/WvGsbpKn/IMG-20250722-103151.jpg"  
+      alt="Zegalinks"  
+      style="cursor: pointer; width: 100%;max-width: 100%; height: 140px;boarder-radious: 12px; object-fit: cover;"  
+      onclick="window.open('https://zegalinks.com/ref/Suman500', '_blank')"  
+    />
+  </div>
+  <script>
+    let countdown = 10;
+    let userKey = "";
+    function startCooldown() {
+  const inputBox = document.querySelector("input");
+  userKey = inputBox.value.trim();
+  if (!userKey || userKey.length < 10) {
+    alert("❌ PEter 10-digit number!");
+    return;
+  }
+
+  document.getElementById("cooldownBox").style.display = "block";
+  document.getElementById("countValue").textContent = countdown;
+
+  const btn = document.getElementById("cooldownButton");
+  btn.disabled = true;
+  btn.textContent = "Please Wait...";
+  btn.style.cursor = "not-allowed";
+  setTimeout(() => {
+    document.getElementById("adImage").style.display = "block";
+    show_9593532()
+      .then(() => {
+        console.log("Ad shown after 5 seconds");
+      })
+      .catch(err => {
+        console.error("Error calling show_9593532:", err);
+      });
+  }, 5000);
+  const interval = setInterval(() => {
+     --;
+    document.getElementById("countValue").textContent = countdown;
+    if (countdown <= 0) {
+      clearInterval(interval);
+      btn.textContent = "Open Link";
+      btn.classList.add("ready");
+      btn.disabled = false;
+      btn.style.cursor = "pointer";
+      btn.onclick = openLinkAfterAd;
+    }
+  }, 1000);
+}
+function openLinkAfterAd() {
+  const url = `https://t.me/Kandahubs18Bot?start=${userKey}`;
+  window.open(url, "_blank");
+}
+  </script>
+</body>
+</html>
